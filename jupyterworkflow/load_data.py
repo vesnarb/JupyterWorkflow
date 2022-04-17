@@ -24,5 +24,13 @@ def get_fremond_data(filename = 'Fremond.csv', url = URL, force_download = False
 
     if force_download or not os.path.exists(filename):
         urlretrieve(url, 'Fremond.csv')
-    data = pd.read_csv('Fremond.csv', index_col = 'Date', parse_dates = True)
+
+    data = pd.read_csv('Fremond.csv', index_col = 'Date')
+
+    try:
+        data.index = pd.to_datetime(data.index, format = '%m/%d/%Y %H:%M:%S %p')
+    except TypeError:
+        data.index = pd.to_datetime(data.index)
+
+
     return data
